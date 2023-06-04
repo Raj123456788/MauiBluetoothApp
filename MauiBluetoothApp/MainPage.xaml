@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiBluetoothApp.MainPage"
+             xmlns:helper="clr-namespace:MauiBluetoothApp.Helpers"
+             xmlns:model="clr-namespace:MauiBluetoothApp.Models"
+             xmlns:viewmodel="clr-namespace:MauiBluetoothApp.ViewModels"
+             x:DataType="viewmodel:MainViewModel"
+             
+             
+             
+             >
+    <ContentPage.Resources>
+        <helper:StringToColorConverter x:Key="stringConverter"></helper:StringToColorConverter>
+    </ContentPage.Resources>
+
+    <Grid Padding="20">
+
+        <VerticalStackLayout x:Name="MainLayout" Spacing="20">
+
+            <Frame BackgroundColor="DarkGray" Padding="5" HorizontalOptions="Center" WidthRequest="200" HeightRequest="100" CornerRadius="40">
+                <Label  x:Name="labelstatus" Text="{Binding Status}" TextColor="{Binding Source={x:Reference labelstatus},Path=Text,Converter={StaticResource stringConverter}}" HorizontalOptions="Center" WidthRequest="140" FontSize="Medium" HeightRequest="20" FontAttributes="Bold" />
+            </Frame>
+            <ListView x:Name="bleListview"  ItemsSource="{Binding Items}" ItemTapped="bleListview_ItemTapped" SeparatorColor="Black" RowHeight="65" >
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="helper:DeviceCandidate">
+                        <TextCell
+                    Text="{Binding Name}"
+                    Detail="{Binding Details}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+
+            </ListView>
+
+        </VerticalStackLayout>
+
+        <StackLayout VerticalOptions="EndAndExpand" Orientation="Horizontal" Spacing="20" Padding="20">
+
+            <Button x:Name="RequestBluetoothBtn" Text="Request Bluetooth"  HorizontalOptions="Center" WidthRequest="150" Command="{Binding RequestBluetoothCommand}"
+                IsVisible="{OnPlatform Android=true, Default=false}"/>
+            <Button x:Name="ScanBtn" Text="Scan Devices" Command="{Binding ScanBtn_ClickedCommand}" HorizontalOptions="Center" WidthRequest="150"/>
+
+        </StackLayout>
+
+        <ActivityIndicator x:Name="BusyIndicator" IsVisible="False" IsRunning="True" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+
+
+        <ActivityIndicator x:Name="HomePageActivityIndicator"
+                           Grid.ColumnSpan="2"
+
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="StartAndExpand" />
+    </Grid>
+
+
+</ContentPage>
